@@ -1,7 +1,8 @@
 var { Sequelize } = require("sequelize");
 var sequelize = new Sequelize({
 	dialect: "sqlite",
-	storage: "./storage/database.sqlite3"
+	storage: "./storage/database.sqlite3",
+	logging: false
 });
 
 async function testConnection() {
