@@ -1,4 +1,4 @@
-var { Class, Trainer, Asset, User } = require("../models/models");
+var { Class, Trainer, Asset, User, Rating } = require("../models/models");
 
 async function getSingleClass(req, res, next) {
 	try {
@@ -38,8 +38,36 @@ async function createSingleClass(req, res, next) {
 	}
 }
 
+async function getRatings(req, res, next) {
+	try {
+		let rating = await Rating.findAll({ where: { classId: req.params.id } });
+		res.json(rating);
+	} catch (error) {
+		console.error(error);
+		res.status(500).end();
+	}
+}
+
+async function saveRating(req, res, next) {
+	try {
+		let rating = await Rating.findAll({ where: { userId: req.fields.userId, classId: req.params.id } });
+		if (rating.length) return res.status(405).end();
+
+		let newRating = await Rating.create({
+			userId: req.fields.userId,
+			classId: req.params.id,
+			rating: req.fields.rating
+		});
+		res.json(newRating);
+	} catch (error) {
+		
+	}
+}
+
 module.exports = {
 	createSingleClass,
 	getSingleClass,
 	getAllClasses,
+	getRatings,
+	saveRating
 };

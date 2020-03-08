@@ -1,9 +1,9 @@
-var { User, Asset, Class } = require("../models/models");
+var { User, Class } = require("../models/models");
 var { hashSync } = require("bcryptjs");
 
 async function getSingleUser(req, res, next) {
 	try {
-		let user = await User.findByPk(parseInt(req.params.id), { include: [ Asset, Class ] });
+		let user = await User.findByPk(parseInt(req.params.id), { include: [ Class ] });
 		user.getClasses();
 		res.json(user);
 	} catch (error) {

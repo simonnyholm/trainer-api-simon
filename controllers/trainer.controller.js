@@ -2,7 +2,7 @@ var { Trainer, Class, Asset } = require("../models/models");
 
 async function getSingleTrainer(req, res, next) {
 	try {
-		let trainer = await Trainer.findByPk(parseInt(req.params.id), { include: [ Class ] });
+		let trainer = await Trainer.findByPk(parseInt(req.params.id), { include: [ Class, Asset ] });
 		res.json(trainer);
 	} catch (error) {
 		console.log(error);
@@ -12,7 +12,7 @@ async function getSingleTrainer(req, res, next) {
 
 async function getAllTrainers(req, res, next) {
 	try {
-		let trainers = await Trainer.findAll();
+		let trainers = await Trainer.findAll({ include: [ Asset ] });
 		res.json(trainers);
 	} catch (error) {
 		console.error(error);
@@ -23,7 +23,8 @@ async function getAllTrainers(req, res, next) {
 async function createSingleTrainer(req, res, next) {
 	try {
 		let trainer = await Trainer.create({
-			trainerName: req.fields.trainerName
+			trainerName: req.fields.trainerName,
+			assetId: req.fields.assetId
 		});
 		res.json(trainer);
 	} catch (error) {
